@@ -38,10 +38,11 @@ namespace api.Controllers
             return Ok(commentDto);
         }
 
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            //if (!ModelState.IsValid)
-                //return BadRequest(ModelState);
+            if (!ModelState.IsValid) //to je tu kvůli validaci
+                return BadRequest(ModelState);
 
             var comment = await _commentRepo.GetByIdAsync(id);
 
@@ -55,9 +56,12 @@ namespace api.Controllers
 
 
 
-        [HttpPost("{stockId}")]
+        [HttpPost("{stockId:int}")]
         public async Task<IActionResult> Create([FromRoute] int stockId, CreateCommentDto commentDto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             if(!await _stockRepo.StockExists(stockId))
             {
                 return BadRequest("Stock does not exists");
@@ -71,11 +75,11 @@ namespace api.Controllers
 
 
         [HttpPut]
-        [Route("{id}")]
+        [Route("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCommentRequestDto updateDto)
         {
-            //if (!ModelState.IsValid)
-            //    return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             var comment = await _commentRepo.UpdateAsync(id, updateDto.ToCommentFromUpdate(id));
 
@@ -89,7 +93,7 @@ namespace api.Controllers
 
 
         [HttpDelete]
-        [Route("{id}")]
+        [Route("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             if (!ModelState.IsValid)
