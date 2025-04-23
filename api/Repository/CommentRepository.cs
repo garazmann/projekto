@@ -18,9 +18,11 @@ namespace api.Repository
             
         }
 
-        public Task<Comment> CreateAsync(Comment commentModel)
+        public async Task<Comment> CreateAsync(Comment commentModel)
         {
-            throw new NotImplementedException();
+            await _context.Comments.AddAsync(commentModel);
+            await _context.SaveChangesAsync();
+            return commentModel;
         }
 
         public Task<Comment?> DeleteAsync(int id)
