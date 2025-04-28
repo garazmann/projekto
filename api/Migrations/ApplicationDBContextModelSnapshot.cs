@@ -159,7 +159,7 @@ namespace api.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("api.Mappers.AppUser", b =>
+            modelBuilder.Entity("api.Models.AppUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
@@ -250,6 +250,21 @@ namespace api.Migrations
                     b.ToTable("Comments");
                 });
 
+            modelBuilder.Entity("api.Models.Portfolio", b =>
+                {
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("StockId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("AppUserId", "StockId");
+
+                    b.HasIndex("StockId");
+
+                    b.ToTable("Portfolios");
+                });
+
             modelBuilder.Entity("api.Models.Stock", b =>
                 {
                     b.Property<int>("Id")
@@ -293,7 +308,7 @@ namespace api.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("api.Mappers.AppUser", null)
+                    b.HasOne("api.Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -302,7 +317,7 @@ namespace api.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("api.Mappers.AppUser", null)
+                    b.HasOne("api.Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -317,7 +332,7 @@ namespace api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("api.Mappers.AppUser", null)
+                    b.HasOne("api.Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -326,7 +341,7 @@ namespace api.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("api.Mappers.AppUser", null)
+                    b.HasOne("api.Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -342,9 +357,35 @@ namespace api.Migrations
                     b.Navigation("Stock");
                 });
 
+            modelBuilder.Entity("api.Models.Portfolio", b =>
+                {
+                    b.HasOne("api.Models.AppUser", "AppUser")
+                        .WithMany("Portfolios")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("api.Models.Stock", "Stock")
+                        .WithMany("Portfolios")
+                        .HasForeignKey("StockId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Stock");
+                });
+
+            modelBuilder.Entity("api.Models.AppUser", b =>
+                {
+                    b.Navigation("Portfolios");
+                });
+
             modelBuilder.Entity("api.Models.Stock", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("Portfolios");
                 });
 #pragma warning restore 612, 618
         }
