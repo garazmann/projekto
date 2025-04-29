@@ -6,7 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using api.Interfaces;
-using api.Mappers;
+using api.Models;
 using Microsoft.IdentityModel.Tokens;
 
 namespace api.Service

@@ -1,13 +1,14 @@
 using api.Data;
-using Microsoft.Extensions.Options;
-using Microsoft.EntityFrameworkCore;
+//using Microsoft.Extensions.Options;
+using api.Models;
 using api.Interfaces;
 using api.Repository;
-using Microsoft.AspNetCore.Identity;
-using api.Mappers;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using api.Service;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -63,7 +64,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddScoped<IStockRepository, StockRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
-//builder.Services.AddScoped<IPortfolioRepository, PortfolioRepository>();
+builder.Services.AddScoped<IPortfolioRepository, PortfolioRepository>();
 //builder.Services.AddScoped<IFMPService, FMPService>();
 //builder.Services.AddHttpClient<IFMPService, FMPService>();
 
