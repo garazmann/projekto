@@ -18,9 +18,11 @@ namespace api.Repository
         }
 
 
-        public Task<Portfolio> CreateAsync(Portfolio portfolio)
+        public async Task<Portfolio> CreateAsync(Portfolio portfolio)
         {
-            throw new NotImplementedException();
+            await _context.Portfolios.AddAsync(portfolio);
+            await _context.SaveChangesAsync();
+            return portfolio;
         }
 
         public Task<Portfolio> DeletePortfolio(AppUser appUser, string symbol)
