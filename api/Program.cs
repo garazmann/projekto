@@ -68,6 +68,21 @@ builder.Services.AddScoped<IPortfolioRepository, PortfolioRepository>();
 //builder.Services.AddScoped<IFMPService, FMPService>();
 //builder.Services.AddHttpClient<IFMPService, FMPService>();
 
+
+//server neposílá povolené CORS hlavičky
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy
+          .WithOrigins("http://localhost:5173") // adresa vašeho Vite dev serveru
+          .AllowAnyMethod()
+          .AllowAnyHeader()
+          .AllowCredentials();                   // pokud potřebujete posílat cookies
+    });
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -81,6 +96,8 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+//druhá část hlavičky CORS
+app.UseCors("AllowFrontend");
 
 app.MapControllers();
 
